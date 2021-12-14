@@ -1,7 +1,7 @@
 import math
 import re
 import json
-from Term import Term
+from src.Term import Term
 
 def combination(n:int, i: int) -> int:
   num: int

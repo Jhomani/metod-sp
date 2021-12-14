@@ -1,11 +1,23 @@
-from flask import Flask, render_template, send_from_directory, request
+from os import defpath
+from flask import Flask, send_from_directory, request
+from src.main import developBinomio
 import json
-from main import developBinomio
 
-print(__name__)
-app = Flask(__name__)
+app = Flask(__name__, static_folder='cli-feeder/build',static_url_path='')
 
-@app.post('/binomio')
+@app.get('/api/platillos')
+def getPlatillos():
+  body = request.json
+
+  jsonResult = developBinomio(
+    body['pow'], 
+    body['firstTerm'], 
+    body['secTerm'], 
+  )
+
+  return jsonResult
+
+@app.post('/api/binomio')
 def binomio():
   body = request.json
 
@@ -17,14 +29,14 @@ def binomio():
 
   return jsonResult
 
-@app.route('/')
-def index():
-  return render_template('index.html')
-
-@app.route('/static/<path:path>')
+@app.route('/api/static/<path:path>')
 def statics(path):
-  print(path)
   return send_from_directory('static', path)
+
+
+@app.route('/')
+def frontend():
+  return send_from_directory(app.static_folder, 'index.html')
 
 if __name__ == '__main__':
   app.run(debug=True)
