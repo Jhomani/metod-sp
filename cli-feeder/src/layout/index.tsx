@@ -2,6 +2,11 @@ import React from "react";
 
 import { Link } from "react-router-dom";
 
+import { Button, Modal } from 'components';
+import { Microphone } from 'icons'
+
+import './layout.scss';
+
 interface InLayout {
   children: JSX.Element | string;
 }
@@ -9,8 +14,8 @@ interface InLayout {
 const Layout = ({ children }: InLayout) => {
 
   return <>
-    <nav>
-      <ul>
+    <nav style={{ height: 60 }}>
+      {/* <ul>
         <li>
           <Link to="/">Home</Link>
         </li>
@@ -20,8 +25,16 @@ const Layout = ({ children }: InLayout) => {
         <li>
           <Link to="/users">Users</Link>
         </li>
-      </ul>
+      </ul> */}
     </nav>
+    <Button
+      type="primary"
+      shape="round"
+      className="fixed-bottom"
+      icon={<Microphone size="1.8rem" />}
+    />
+    <Modal />
+
     <div className="content">{children}</div>
     <div className="footer">this is footer</div>
   </>

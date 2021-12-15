@@ -1,5 +1,5 @@
 body {
-  font-family: 'Fira Sans', 'Helvetica Neue', sans-serif;
+  font-family: 'NoirPro', 'Fira Sans', 'Helvetica Neue', sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 }
@@ -10,7 +10,21 @@ body {
   box-sizing: border-box;
 }
 
+p, h1, h3, h2, h4 {
+  background-color: transparent;
+}
+
 code {
   font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
     monospace;
+}
+
+#modal {
+  background-color: #0007;
+  position: fixed;
+  height: 100vh;
+  z-index: 5;
+  top: 0;
+  left: 0;
+  width: 100%;
 }

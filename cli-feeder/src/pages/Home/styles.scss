@@ -1,0 +1,58 @@
+.landing {
+  .landing-content {
+    height: calc(100vh - 60px);
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    padding: 20px;
+    max-width: 1300px;
+    margin: 0 auto;
+    // align-items: center;
+
+    .actions {
+      display: flex;      
+      width: 300px;
+      justify-content: space-between;
+      margin-top: 20px;
+    }
+
+
+    p {
+      width: 60%;
+      padding: 5px;
+    }
+  }
+
+  .bg-landing {
+    position: absolute;
+    top: 0;
+    right: 0;
+    height: 100vh;
+    width: 100%;
+    z-index: -1;
+    background-color: #ffc043;
+    // background-color: #000;
+    display: flex;
+    justify-content: space-between;
+  }
+
+  .bg-landing {
+    .bg-left {
+      object-position: right;
+    } 
+    .bg-right {
+      object-position: left;
+    } 
+
+    img {
+      object-fit: cover;
+      overflow-y: hidden;
+      height: 100%;
+    }
+
+    .bg-sep {
+      min-width: 30px;
+      height: 100%;
+    }
+  } 
+}

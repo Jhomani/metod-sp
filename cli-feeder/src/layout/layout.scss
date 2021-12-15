@@ -1,0 +1,11 @@
+@import '/src/styles/shared.scss';
+
+.fixed-bottom {
+  box-shadow: $elavation15;
+  position: fixed;
+  bottom: 20px;
+  right: 20px;
+}
+.footer {
+  height: 100px;
+}

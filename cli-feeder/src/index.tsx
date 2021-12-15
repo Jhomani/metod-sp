@@ -2,8 +2,7 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 import App from './router/index';
 
-// global css
-import './styles/index.css';
+import './styles/index.scss';
 
 ReactDOM.render(
   <React.StrictMode>

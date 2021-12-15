@@ -9,6 +9,9 @@ import {
 
 import Layout from "../layout";
 
+// pages
+import Home from '../pages/Home'
+
 export default function App() {
   return (
     <Router>
@@ -21,10 +24,6 @@ export default function App() {
       </Layout>
     </Router>
   );
-}
-
-function Home() {
-  return <h2>Home</h2>;
 }
 
 function About() {
