@@ -1,5 +1,5 @@
 from os import defpath
-from flask import Flask, send_from_directory, request
+from flask import Flask, send_from_directory, request,render_template 
 from src.main import developBinomio
 import json
 
@@ -17,7 +17,11 @@ def getPlatillos():
 
   return jsonResult
 
-@app.post('/api/binomio')
+@app.route('/api/template')
+def template():
+  return render_template('index.html')
+
+@app.post('/api/template')
 def binomio():
   body = request.json
 
