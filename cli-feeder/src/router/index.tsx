@@ -7,7 +7,7 @@ import {
   Routes
 } from "react-router-dom";
 
-import Layout from "../layout";
+import Layout from "../Layout";
 
 // pages
 import Home from '../pages/Home'

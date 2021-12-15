@@ -1,4 +1,4 @@
-import storage from "@redux/config";
+import storage from "redux/config";
 
 /**
  * Checks if a network request came back fine, and throws an error if not
