@@ -1,13 +1,10 @@
-import React, { useReducer, useEffect } from 'react';
-import { useNavigate } from "react-router-dom";
+import React, { useEffect, MouseEvent, useRef } from 'react';
 import ReactDOM from 'react-dom';
 
 import './modal.scss';
 
 interface InModal {
-  shadow?: 'primary' | 'normal';
-  icon?: JSX.Element;
-  show?: boolean;
+  show: boolean;
   shape?: 'round';
   to?: string;
   align?: 'flex-bottom';
@@ -16,29 +13,38 @@ interface InModal {
   onClick?: Function;
   inBlank?: string;
   className?: string;
+  onClose: Function;
 }
 
 export const Modal = (props: InModal) => {
-  const router = useNavigate();
+  let resp = <></>;
   const {
     children, content,
     show = false,
-    icon,
-    shape = '',
+    onClose,
     align = '',
     onClick, inBlank,
     to, className = ''
   } = props;
 
-  const Modal = <div
-    className='modal-content'
-  >
-    {children}
-  </div>;
+  const modalCover = useRef(null);
 
-  useEffect(() => {
-    ReactDOM.render(Modal, document.getElementById('modal'))
-  }, [show])
+  const handleOutbox = (ev: MouseEvent) => {
+    const coverNode = modalCover.current;
+    if (coverNode && ev.target === coverNode) onClose()
+  }
 
-  return <></>
+  if (show) resp = (
+    <div
+      ref={modalCover}
+      className='modal'
+      onClick={handleOutbox}
+    >
+      <div className='modal-box' >
+        {children}
+      </div>
+    </ div>
+  )
+
+  return resp;
 }

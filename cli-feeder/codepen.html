@@ -1,0 +1,127 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+  <style>
+    canvas {
+      margin-top: 10px;
+      background-color: black;
+    }
+
+    .app {
+      text-align: center;
+      padding-top: 20px;
+    }
+  </style>
+</head>
+
+<body>
+  <div class="app">
+    <canvas width="500" height="300"></canvas>
+  </div>
+
+  <script>
+    (async () => {
+      let recorder = null;
+      let volume = null;
+      let audioInput = null;
+      let AudioContext = window.AudioContext || window.webkitAudioContext;
+      let context = null;
+      let analyser = null;
+      let canvas = document.querySelector('canvas');
+      let canvasCtx = canvas.getContext("2d");
+      let stream = null;
+
+      try {
+        window.stream = stream = await getStream();
+        console.log('Got stream');
+      } catch (err) {
+        alert('Issue getting mic', err);
+      }
+
+      const deviceInfos = await navigator.mediaDevices.enumerateDevices();
+
+      var mics = [];
+
+      function getStream(constraints) {
+        if (!constraints) {
+          constraints = { audio: true, video: false };
+        }
+        return navigator.mediaDevices.getUserMedia(constraints);
+      }
+
+      setUpRecording();
+
+      function setUpRecording() {
+        context = new AudioContext();
+        analyser = context.createAnalyser();
+
+        // creates an audio node from teh microphone incoming stream
+        audioInput = context.createMediaStreamSource(stream);
+        audioInput.connect(analyser);
+
+        let bufferSize = 2048;
+        let recorder = context.createScriptProcessor(bufferSize, 2, 2);
+
+        analyser.connect(recorder);
+
+        // finally connect the processor to the output
+        recorder.connect(context.destination);
+
+        visualize();
+      };
+
+      function visualize() {
+        WIDTH = canvas.width;
+        HEIGHT = canvas.height;
+        CENTERX = canvas.width / 2;
+        CENTERY = canvas.height / 2;
+
+        let visualSetting = "frequencybars";
+        console.log(visualSetting);
+
+        if (visualSetting == "frequencybars") {
+          analyser.fftSize = 64;
+          var bufferLengthAlt = analyser.frequencyBinCount;
+          console.log(bufferLengthAlt);
+          var dataArrayAlt = new Uint8Array(bufferLengthAlt);
+
+          canvasCtx.clearRect(0, 0, WIDTH, HEIGHT);
+
+          var drawAlt = function () {
+            // requestAnimationFrame(drawAlt);
+
+            analyser.getByteFrequencyData(dataArrayAlt);
+
+            canvasCtx.fillStyle = 'rgb(0, 0, 0)';
+            canvasCtx.fillRect(0, 0, WIDTH, HEIGHT);
+
+            var barWidth = (WIDTH / bufferLengthAlt);
+            var barHeight;
+            var x = 0;
+
+            for (var i = 0; i < bufferLengthAlt; i++) {
+              barHeight = dataArrayAlt[i];
+
+              canvasCtx.fillStyle = 'rgb(' + (barHeight + 100) + ',50,50)';
+              canvasCtx.fillRect(x, HEIGHT - barHeight / 2, barWidth, barHeight / 2);
+
+              x += barWidth + 1;
+            }
+          };
+
+          setInterval(drawAlt, 100)
+
+          // drawAlt();
+        }
+      }
+    })()
+
+  </script>
+</body>
+
+</html>

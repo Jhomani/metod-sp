@@ -2,3 +2,6 @@
 Flask
 mysql-connector-python
 SpeechRecognition
+pydub
+
+# apt-get install ffmpeg

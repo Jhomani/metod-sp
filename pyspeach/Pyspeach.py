@@ -15,7 +15,7 @@ class Pyspeach:
       'source': 'tabla',
     }
 
-  def runCommand(self, audiopath: str):
+  def runCommand(self, audiopath: str)-> str:
     rec = sr.Recognizer()
 
     with sr.AudioFile(audiopath) as source:
@@ -25,7 +25,7 @@ class Pyspeach:
       text = rec.recognize_google(audioData, language="es-ES")
       print(text)
 
-      # return self.handleText(text)
+      return text
 
   def setDeleteAct(self, cmd: str):
     self._dicionary['delete'] = cmd

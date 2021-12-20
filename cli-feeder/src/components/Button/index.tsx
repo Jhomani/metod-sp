@@ -20,6 +20,7 @@ interface InButton {
 export const Button = (props: InButton) => {
   const btn = useRef(null);
   const router = useNavigate();
+
   const {
     children, content,
     type, icon,
@@ -28,6 +29,7 @@ export const Button = (props: InButton) => {
     onClick, inBlank,
     to, className = ''
   } = props;
+
 
   // https://api.whatsapp.com/send?phone=59172289152&text=Hola!%20estoy%20interesado%20en%20tus%20servicios.
 
@@ -38,13 +40,11 @@ export const Button = (props: InButton) => {
     node.classList.add('onpressed');
     setTimeout(() => node.classList.remove('onpressed'), 350)
 
-    if (onClick) onClick();
     if (openOutRef) {
       node.setAttribute('href', inBlank);
       node.setAttribute('target', '_blank');
-    } else if (to) {
-      router(to);
-    }
+    } else if (to) router(to);
+    if (onClick) onClick();
   }
 
   return <>

@@ -6,22 +6,83 @@
 </head>
 
 <body>
-  <a id="download">Download</a>
+  <p id="download" style="word-wrap: anywhere;"></p>
+  <p id="analyser" style="word-wrap: anywhere;"></p>
   <button id="stop">Stop</button>
   <script>
+    let angle = document.getElementById('download');
+    let analize = document.getElementById('analyser');
+
     const handleSuccess = function (stream) {
-      const context = new AudioContext();
-      const source = context.createMediaStreamSource(stream);
-      const processor = context.createScriptProcessor(1024, 1, 1);
+      watchFrec(stream);
+    }
 
-      source.connect(processor);
-      processor.connect(context.destination);
+    function watchFrec(stream) {
+      let audioCtx = new window.AudioContext();
+      let analyser = audioCtx.createAnalyser();
+      let intervalId = 0;
 
-      processor.onaudioprocess = function (e) {
-        // Do something with the data, e.g. convert it to WAV
-        console.log(e.inputBuffer);
-      };
-    };
+      let source = audioCtx.createMediaStreamSource(stream);
+      source.connect(analyser);
+
+      // let bufferSize = 2048;
+      // let distortion = audioCtx.createScriptProcessor(bufferSize, 2, 2);
+      // analyser.connect(distortion);
+      // distortion.connect(audioCtx.destination);
+
+      analyser.fftSize = 32;
+      let bufferLength = analyser.frequencyBinCount;
+      let dataArray = new Uint8Array(bufferLength);
+
+      const history = [];
+      let pointer = 0;
+      let spoken = false;
+      weHaveToClose.spoke = false;
+
+      const intervalFrecuacy = () => {
+        analyser.getByteFrequencyData(dataArray);
+
+        let sum = 0
+        for (let item of dataArray)
+          sum += item;
+        sum = Math.floor(sum / 100);
+
+        if (pointer == 15) pointer = 0
+        history[pointer] = sum;
+        pointer++;
+
+        angle.innerText = " >" + sum + " <, "
+        analize.innerText = history + '\n ' + weHaveToClose(history)
+
+        if (weHaveToClose(history)) {
+          clearInterval(intervalId)
+          source.disconnect()
+          audioCtx.close()
+        }
+      }
+
+      intervalId = setInterval(intervalFrecuacy, 100)
+
+    }
+
+    function weHaveToClose(history) {
+      let slowBits = 0;
+      let numHightBits = 0;
+      let res = false;
+
+      for (let byte of history) {
+        if (byte <= 10) slowBits++;
+        if (byte >= 15) numHightBits++;
+      }
+
+      if (slowBits == 0)
+        weHaveToClose.spoke = true;
+
+      if (weHaveToClose.spoke && slowBits == 2 && numHightBits > 5)
+        res = true;
+
+      return res;
+    }
 
     navigator.mediaDevices.getUserMedia({ audio: true, video: false })
       .then(handleSuccess);

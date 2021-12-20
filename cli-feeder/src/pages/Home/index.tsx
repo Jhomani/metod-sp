@@ -21,7 +21,7 @@ const Home = () => {
           <Button type='secondary'>
             Buscar Comida
           </Button>
-          <Button type='gradient'>
+          <Button type='primary'>
             Iniciar Session
           </Button>
         </div>
