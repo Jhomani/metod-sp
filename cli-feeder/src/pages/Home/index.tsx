@@ -1,10 +1,10 @@
 import React from 'react';
 
-import './styles.scss';
+import './home.scss';
 
 import { Button } from 'components/Button'
 
-const Home = () => {
+export const Home = () => {
   return (
     <div className="landing">
       <div className='bg-landing'>
@@ -29,5 +29,3 @@ const Home = () => {
     </div>
   );
 }
-
-export default Home;

@@ -1,6 +1,8 @@
 import re
+import wave
+import os
 
-def formatResDict(attr, val: tuple) -> dict:
+def formatResDict(attr: tuple, val: tuple) -> dict:
   res = {}
   size = len(attr)
 
@@ -9,7 +11,7 @@ def formatResDict(attr, val: tuple) -> dict:
 
   return res
 
-def formatResList(attr: tuple, val):
+def formatResList(attr: tuple, val: list):
   res = []
 
   for i in val:

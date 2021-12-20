@@ -10,7 +10,7 @@ import {
 import Layout from "../Layout";
 
 // pages
-import Home from '../pages/Home'
+import { Home, Products } from '../pages'
 
 export default function App() {
   return (
@@ -18,7 +18,7 @@ export default function App() {
       <Layout>
         <Routes>
           <Route path="/about" element={<About />} />
-          <Route path="/users" element={<Users />} />
+          <Route path="/products" element={<Products />} />
           <Route path="/" element={<Home />} />
         </Routes>
       </Layout>
@@ -28,8 +28,4 @@ export default function App() {
 
 function About() {
   return <h2>About</h2>;
-}
-
-function Users() {
-  return <h2>Users</h2>;
 }

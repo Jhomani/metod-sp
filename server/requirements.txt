@@ -4,5 +4,6 @@ mysql-connector-python
 SpeechRecognition
 pydub
 gTTS
+flask_cors
 
 # apt-get install ffmpeg

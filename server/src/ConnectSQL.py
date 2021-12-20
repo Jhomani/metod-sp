@@ -1,7 +1,7 @@
-from mysql.connector import Error, connect
 from mysql.connector.connection import MySQLConnection, MySQLCursor
+from mysql.connector import Error, connect
 
-from utils import formatResDict
+from src.utils import formatResDict, formatResList
 
 class ConnectSQL:
   __connection: MySQLConnection
@@ -34,6 +34,27 @@ class ConnectSQL:
       self.__connection.close()
       self.__cursor.close()
 
+  def getAll(self, table: str):
+    res = None
+
+    try:
+      self.connect()
+
+      sqlQuery = f'SELECT * FROM {table};'
+
+      self.__cursor.execute(sqlQuery)
+      record = self.__cursor.fetchall()
+
+      if record is not None:
+        colNames = self.__cursor.column_names
+        res = formatResList(colNames, record)
+
+    except Error as e:
+      print("Error while runing to MySQL", e)
+    else:
+      self.disconnect()
+
+    return res
 
   def getById(self, key: int, table: str):
     res = None
@@ -41,7 +62,7 @@ class ConnectSQL:
     try:
       self.connect()
 
-      sqlQuery = f'SELECT * FROM {table} WHERE id={key} LIMIT 10'
+      sqlQuery = f'SELECT * FROM {table} WHERE id={key};'
 
       self.__cursor.execute(sqlQuery)
       record = self.__cursor.fetchone()
@@ -103,3 +124,4 @@ class ConnectSQL:
       self.disconnect()
 
     return res
+
