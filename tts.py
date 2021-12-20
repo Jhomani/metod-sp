@@ -14,4 +14,4 @@ myobj = gTTS(text=mytext, lang='es', slow=False, tld='es')
 myobj.save("welcome.mp3")
   
 # Playing the converted file
-os.system("audacious -Hq  welcome.mp3")
+# os.system("start wmplayer welcome.mp3")
