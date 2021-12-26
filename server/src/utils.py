@@ -19,19 +19,29 @@ def formatResList(attr: tuple, val: list):
 
   return res
 
-def parser(token: str, dic: tuple) -> tuple:
-  res = None
+def parser(token: str) -> str:
+  res = '' 
 
-  actions = f"({dic['delete']}|{dic['update']}|{dic['get']})"
-  regex = f"({actions}).*[0-9]+.*({dic['source']}|de) ([a-z]+)$"
+  products = (
+    'milanesa', 
+    'pique', 
+    'silpancho',
+    'pollo broaster',
+    'pollo al spiedo',
+  )
 
-  matched = re.search(regex, token)
+  if re.search(r'(mostrar|listar|buscar)?( )?(platos|platillos)', token):
+    res = '/products'
+  elif re.search(r'(horarios) .{0,2} atención', token):
+    res = '/schedule'
+  elif re.search(r'(detalle|detallar)( de )?[a-zA-Z]*', token):
+    plate = ''
 
-  if matched:
-    [action] = re.findall(actions, token)
-    [key] = re.findall('[0-9]+', token)
-    [table] = re.findall(r'\s([a-zA-Z]+)$', token)
-
-    res = (action,int(key), table.capitalize() )
-
+    for item in products:
+      if token.find(item) > 0:
+        plate = item
+    
+    if len(plate) > 0:
+      res = f"/products/{plate.replace(' ', '-')}"
+      
   return res

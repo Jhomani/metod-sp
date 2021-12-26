@@ -13,70 +13,67 @@
 //     return this.height - this.header; 
 //   },
 // }
+import request, { getOptionsWithToken, postOptionsWithoutToken } from './request';
 import storage from './Storage';
 
-export const recordAudio = (): any => {
-  return new Promise(async resolve => {
-    const stream = await navigator.mediaDevices.getUserMedia({
-      audio: true
-    });
-
-    const mediaRecorder = new MediaRecorder(stream);
-    const audioChunks: BlobPart[] = [];
-
-    measureFrec(stream, mediaRecorder);
-
-    mediaRecorder.addEventListener("dataavailable", event => {
-      audioChunks.push(event.data);
-    });
-
-    mediaRecorder.addEventListener("stop", async () => {
-      const audioBlob = new Blob(audioChunks);
-
-      const reader = new FileReader();
-      reader.readAsDataURL(audioBlob);
-
-      reader.onload = async () => {
-        let base64Audio;
-
-        if (typeof reader.result == 'string')
-          base64Audio = reader.result.split(',')[1];
-
-        await fetch('http://localhost:5000/api/saveAudio', {
-          method: 'POST',
-          headers: {
-            Accept: "application/json",
-            'Content-Type': 'application/json'
-          },
-          body: JSON.stringify({ audio: base64Audio })
-        })
-      };
-
-      // const file = new File([audioBlob], "recorded", {
-      //   lastModified: Date.now(),
-      // });
-
-      // console.log(file);
-
-      // const form = new FormData()
-      // form.append('audio', file);
-
-      // await fetch('http://localhost:5000/api/saveAudio', {
-      //   method: 'POST',
-      //   body: form,
-      // })
-
-      // const play = () => audio.play();
-      // play()
-
-      // resolve({ audioBlob, audioUrl, play });
-    });
-
-    const start = () => mediaRecorder.start();
-    const stop = () => mediaRecorder.stop();
-
-    resolve({ start, stop });
+export const recordAudio = async (cb: (a: string) => void) => {
+  const stream = await navigator.mediaDevices.getUserMedia({
+    audio: true
   });
+
+  const mediaRecorder = new MediaRecorder(stream);
+  const audioChunks: BlobPart[] = [];
+
+  measureFrec(stream, mediaRecorder);
+
+  mediaRecorder.addEventListener("dataavailable", event => {
+    audioChunks.push(event.data);
+  });
+
+  mediaRecorder.addEventListener("stop", async () => {
+    const audioBlob = new Blob(audioChunks);
+
+    const reader = new FileReader();
+    reader.readAsDataURL(audioBlob);
+
+    reader.onload = async () => {
+      let base64Audio;
+
+      if (typeof reader.result == 'string')
+        base64Audio = reader.result.split(',')[1];
+
+      const options = postOptionsWithoutToken({ audio: base64Audio });
+
+      const result = await request(
+        'http://localhost:5000/api/saveAudio',
+        options
+      );
+
+      cb(result.route);
+    };
+
+    // const file = new File([audioBlob], "recorded", {
+    //   lastModified: Date.now(),
+    // });
+
+    // console.log(file);
+
+    // const form = new FormData()
+    // form.append('audio', file);
+
+    // await fetch('http://localhost:5000/api/saveAudio', {
+    //   method: 'POST',
+    //   body: form,
+    // })
+
+    // const play = () => audio.play();
+    // play()
+
+    // resolve({ audioBlob, audioUrl, play });
+  });
+
+  mediaRecorder.start();
+  // const stop = () => mediaRecorder.stop();
 }
 
 function measureFrec(stream: MediaStream, mediaRec: MediaRecorder) {

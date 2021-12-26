@@ -6,6 +6,7 @@ from flask_cors import CORS
 
 from pyspeach.Pyspeach import Pyspeach
 from src.ConnectSQL import ConnectSQL 
+from src.utils import parser
 
 test = Pyspeach()
 connected = ConnectSQL('root', 'Test1235', 'feeder')
@@ -55,7 +56,11 @@ def uploadAudio():
 
   stringify = test.runCommand(filePath)
 
-  return { 'command': stringify }
+  print(stringify)
+
+  route =  parser(stringify)
+
+  return jsonify({ 'route': route }) 
 
 @app.post('/api/upload-file')
 def uploadFile():

@@ -22,7 +22,7 @@ class Pyspeach:
       rec.adjust_for_ambient_noise(source=source)
       audioData = rec.record(source)
 
-      text = rec.recognize_google(audioData, language="es-ES")
+      text = rec.recognize_google(audioData, language="es-US")
       print(text)
 
       return text

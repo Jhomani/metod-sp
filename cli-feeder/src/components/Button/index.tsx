@@ -19,7 +19,7 @@ interface InButton {
 
 export const Button = (props: InButton) => {
   const btn = useRef(null);
-  const router = useNavigate();
+  const navigateTo = useNavigate();
 
   const {
     children, content,
@@ -43,7 +43,7 @@ export const Button = (props: InButton) => {
     if (openOutRef) {
       node.setAttribute('href', inBlank);
       node.setAttribute('target', '_blank');
-    } else if (to) router(to);
+    } else if (to) navigateTo(to);
     if (onClick) onClick();
   }
 

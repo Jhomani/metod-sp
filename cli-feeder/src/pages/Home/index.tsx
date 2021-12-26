@@ -18,7 +18,7 @@ export const Home = () => {
         </h3>
         <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Delectus quas quae enim exercitationem eius nihil itaque, ea vel minus mollitia, officia perspiciatis beatae ullam? Tenetur provident nostrum illum ducimus quos.</p>
         <div className='actions'>
-          <Button type='secondary'>
+          <Button type='secondary' to='/products'>
             Buscar Comida
           </Button>
           <Button type='primary'>

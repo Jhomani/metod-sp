@@ -10,7 +10,7 @@ import {
 import Layout from "../Layout";
 
 // pages
-import { Home, Products } from '../pages'
+import { Home, Products, Product } from '../pages'
 
 export default function App() {
   return (
@@ -20,6 +20,7 @@ export default function App() {
           <Route path="/about" element={<About />} />
           <Route path="/products" element={<Products />} />
           <Route path="/" element={<Home />} />
+          <Route path="/product/:name" element={<Product />} />
         </Routes>
       </Layout>
     </Router>

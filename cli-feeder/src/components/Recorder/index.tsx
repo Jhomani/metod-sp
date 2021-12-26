@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 
 import { Link } from "react-router-dom";
 
@@ -6,6 +6,7 @@ import { Button, Modal } from 'components';
 import { Microphone } from 'icons'
 
 import { recordAudio } from 'utils/global'
+import { useNavigate } from "react-router-dom";
 
 import './recorder.scss';
 
@@ -15,12 +16,33 @@ interface InRecorder {
 export const Recorder = () => {
   const [show, setShow] = useState(false);
   const [recording, setRecording] = useState(false);
+  const navigateTo = useNavigate();
 
   const closeModal = () => setShow(false);
 
-  const handleRecord = async () => {
-    const recorder = await recordAudio();
-    recorder.start();
+  const startRecord = async () => {
+
+    setRecording(true);
+    await recordAudio(afterRecorded);
+  }
+  useEffect(() => {
+    if (show) {
+      const audio = new Audio(
+        'http://localhost:5000/static/audios/welcome.mp3'
+      );
+      audio.play();
+
+    }
+  }, [show])
+
+  const afterRecorded = (path: string) => {
+    console.log('extecuid')
+    if (path) {
+      navigateTo(path);
+      setShow(false)
+    }
+
+    setRecording(false);
   }
 
   return <>
@@ -36,15 +58,17 @@ export const Recorder = () => {
     <Modal onClose={closeModal} show={show}>
       <div className="recording-seccion">
         <Button
-          type="secondary"
+          type={recording ? "primary" : "secondary"}
           shape="round"
           className="record-button"
-          icon={<Microphone color="black" size="2.8rem" />}
-          onClick={handleRecord}
+          icon={<Microphone color={recording ? "white" : "black"} size="2.8rem" />}
+          onClick={startRecord}
         />
 
-        <span className="g-mt-5">Toca el micrófono para empezar</span>
+        <span className="g-mt-5">
+          {recording ? 'Hablando...' : 'Toca el micrófono para empezar'}
 
+        </span>
       </div>
     </Modal>
   </>
