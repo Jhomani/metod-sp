@@ -24,6 +24,7 @@ export const Products = () => {
   }
 
   return <div className='products'>
+    <h2 className='g-mb-3'>Nuestros Productos</h2>
     {
       platillos.map((item: any, i: number) => (
         <div key={i} className="wrapper">

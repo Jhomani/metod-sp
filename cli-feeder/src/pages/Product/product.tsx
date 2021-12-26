@@ -9,7 +9,14 @@ import { useParams } from "react-router-dom";
 const camp = ["1 porción arroz (graneado)", " 1 porción papa (Frita)", " 1 huevo", " 1 carne (apanada)", " 1 porción Ensalada (Cebolla, Locoto, Tomate, Zanahoria)"]
 
 export const Product = () => {
-  const [platillos, setPlatillos] = useState([]);
+  const [platillo, setPlatillo] = useState({
+    description: '',
+    price: 0,
+    name: '',
+    id: 0,
+    fileLike: ''
+  });
+  const [compose, setCompose] = useState([]);
   const params = useParams();
 
 
@@ -35,26 +42,26 @@ export const Product = () => {
       options
     );
 
-    console.log(result)
-
-    setPlatillos(result)
+    setCompose(result.compound.split(':'));
+    delete result.compound
+    setPlatillo(result);
   }
 
   return <div className='product'>
     <div className="wrapper">
       <div className="column">
-        <h3>This is Title</h3>
+        <h3>{platillo.name}</h3>
         <img
-          src={`http://localhost:5000/static/products/silpancho.jpg`} alt="product" />
-        <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Voluptatum, natus optio unde tempora et mollitia ratione reiciendis consequatur voluptas at ea saepe fugiat ut nobis necessitatibus, debitis ipsum iste quisquam.</p>
-
+          src={`http://localhost:5000${platillo.fileLike}`} alt="product" />
+        <p>{platillo.description}</p>
       </div>
-      <div className="column">
-        <h6>Compuesto</h6>
-        <ul className='compose'>
-          {camp.map((item, i) => <li key={i}>{item}</li>)}
+      <div className="column g-pl-5">
+        <h6 className='g-my-3'>Compuesto por:</h6>
+        <ul className='compose '>
+          {compose.map((item, i) => <li key={i}>{item}</li>)}
         </ul>
-        <Button type="primary">Hacer Perdido</Button>
+        <h6 className='g-my-3'>Precio: Bs. {platillo.price}</h6>
+        <Button type="primary" className='g-mt-5'>Hacer Perdido</Button>
       </div>
     </div>
   </div>
