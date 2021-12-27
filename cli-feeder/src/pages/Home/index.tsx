@@ -21,8 +21,8 @@ export const Home = () => {
           <Button type='secondary' to='/products'>
             Buscar Comida
           </Button>
-          <Button type='primary'>
-            Iniciar Session
+          <Button type='primary' to='/informe'>
+            Informe Ventas
           </Button>
         </div>
       </div>

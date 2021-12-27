@@ -1,0 +1,31 @@
+.inform {
+  max-width: 800px;
+  margin: 20px auto;
+  justify-content: center;
+  display: flex;
+  flex-wrap: wrap;
+  text-align: center;
+
+  .wrapper {
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-around;
+    margin: 15px 10px;
+    background: #fff2;
+    border-radius: 20px;
+    padding: 20px 30px;
+
+
+    a {
+      color: #000;
+    }
+  }
+
+  h3 {
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    overflow: hidden;
+    width: 90%;
+  }
+}
+

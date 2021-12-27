@@ -56,6 +56,28 @@ class ConnectSQL:
 
     return res
 
+  def getInforme(self):
+    res = None
+
+    try:
+      self.connect()
+
+      sqlQuery = f'SELECT COUNT(*) as cant, name FROM Venta GROUP BY name;'
+
+      self.__cursor.execute(sqlQuery)
+      record = self.__cursor.fetchall()
+
+      if record is not None:
+        colNames = self.__cursor.column_names
+        res = formatResList(colNames, record)
+
+    except Error as e:
+      print("Error while runing to MySQL", e)
+    else:
+      self.disconnect()
+
+    return res
+
   def getById(self, key: int, table: str):
     res = None
 

@@ -1,7 +1,5 @@
 import React, { useEffect, useState } from "react";
 
-import { Link } from "react-router-dom";
-
 import { Button, Modal } from 'components';
 import { Microphone } from 'icons'
 
@@ -10,8 +8,7 @@ import { useNavigate } from "react-router-dom";
 
 import './recorder.scss';
 
-interface InRecorder {
-}
+let saw = false;
 
 export const Recorder = () => {
   const [show, setShow] = useState(false);
@@ -26,12 +23,13 @@ export const Recorder = () => {
     await recordAudio(afterRecorded);
   }
   useEffect(() => {
-    if (show) {
+    if (show && !saw) {
       const audio = new Audio(
         'http://localhost:5000/static/audios/welcome.mp3'
       );
       audio.play();
 
+      saw = true;
     }
   }, [show])
 

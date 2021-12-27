@@ -29,7 +29,7 @@ export const Product = () => {
     const options = getOptionsWithoutToken();
 
     const idsMap: { [a: string]: number } = {
-      'sillpancho': 1,
+      'silpancho': 1,
       'pollo-broaster': 2,
       'pollo-espiedo': 3,
       'chuleta': 4,

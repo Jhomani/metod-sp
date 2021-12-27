@@ -4,7 +4,7 @@ import os
 # The text that you want to convert to audio
 welcome = ''' 
   Buenas tardes. los comandos disponibles son los siguientes:
-  Mostrar platos. Horarios de atención. Detallar plato. por ejemplo, Detalle de Milanesa.
+  Mostrar platos. Informe de Ventas. Detallar plato. por ejemplo, Detallar Milanesa.
 '''
 # Language in which you want to convert
   

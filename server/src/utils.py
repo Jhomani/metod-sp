@@ -32,8 +32,8 @@ def parser(token: str) -> str:
 
   if re.search(r'(mostrar|listar|buscar)?( )?(platos|platillos)', token):
     res = '/products'
-  elif re.search(r'(horarios) .{0,2} atención', token):
-    res = '/schedule'
+  elif re.search(r'(informe) .{0,2} ventas', token):
+    res = '/informe'
   elif re.search(r'(detalle|detallar)( de )?[a-zA-Z]*', token):
     plate = ''
 
@@ -42,6 +42,6 @@ def parser(token: str) -> str:
         plate = item
     
     if len(plate) > 0:
-      res = f"/products/{plate.replace(' ', '-')}"
+      res = f"/product/{plate.replace(' ', '-')}"
       
   return res

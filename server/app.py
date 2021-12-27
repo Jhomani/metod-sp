@@ -1,4 +1,5 @@
 import base64
+from os import path
 from werkzeug.utils import secure_filename
 from flask import Flask, send_from_directory, request,render_template, jsonify 
 from pydub import AudioSegment
@@ -15,6 +16,30 @@ app = Flask(__name__)
 
 CORS(app)
 app.config["UPLOAD_FOLDER"] = "static/"
+
+@app.get('/api/statistic')
+def statictic():
+  f = open('static/static.csv', 'w')
+  f.write('nombre,  n_ventas,  porcentaje\n')
+  
+  total=0
+  inform = connected.getInforme()
+
+  for item in inform:
+    total += item['cant']
+
+  for item in inform:
+    porc = (item['cant']/total)*100
+
+    f.write(f"{item['name']},  {item['cant']},  {'{:.2f}'.format(porc)}\n")
+
+  f.write(f'\nTotal Ventas: {total}')
+
+  f.close()
+
+  print(total)
+
+  return send_from_directory('static', 'static.csv')
 
 @app.get('/api/atencion')
 def atencion():
