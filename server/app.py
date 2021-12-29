@@ -4,6 +4,7 @@ from werkzeug.utils import secure_filename
 from flask import Flask, send_from_directory, request,render_template, jsonify 
 from pydub import AudioSegment
 from flask_cors import CORS
+from threading import Thread
 
 from pyspeach.Pyspeach import Pyspeach
 from src.ConnectSQL import ConnectSQL 
@@ -17,13 +18,11 @@ app = Flask(__name__)
 CORS(app)
 app.config["UPLOAD_FOLDER"] = "static/"
 
-@app.get('/api/statistic')
-def statictic():
+def takeStatistics(inform: list):
   f = open('static/static.csv', 'w')
   f.write('nombre,  n_ventas,  porcentaje\n')
   
   total=0
-  inform = connected.getInforme()
 
   for item in inform:
     total += item['cant']
@@ -37,9 +36,14 @@ def statictic():
 
   f.close()
 
-  print(total)
+@app.get('/api/statistic')
+def statictic():
+  inform = connected.getInforme()
 
-  return send_from_directory('static', 'static.csv')
+  thr = Thread(target=takeStatistics, args=(inform,))
+  thr.start()
+
+  return {'message': 'Making'}
 
 @app.get('/api/atencion')
 def atencion():

@@ -1,6 +1,4 @@
 import re
-import wave
-import os
 
 def formatResDict(attr: tuple, val: tuple) -> dict:
   res = {}
